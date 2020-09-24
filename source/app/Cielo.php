@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Api;
+namespace Source\App;
 
 class Cielo {
     /** @var string */
@@ -112,6 +112,7 @@ class Cielo {
         $number = substr($cardNumber, 1, 6);
         $this->endPoint = "/1/cardBin/{$number}";
         $this->get();
+        
         return $this->callBack;
     }
     
