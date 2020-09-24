@@ -59,6 +59,7 @@ class Cielo {
     }
     
     
+    
     /**
      * Cria um cartão de crédito
      * @param type $name
@@ -90,6 +91,8 @@ class Cielo {
         return $this->callBack;
     }
     
+    
+    
     /**
      * Consulta cartão de crédito
      * @param type $cardToken
@@ -102,12 +105,14 @@ class Cielo {
         return $this->callBack;
     }
     
+    
+    
     /**
      * Consulta dados do cartão de crédito
      * @param type $cardNumber
      * @return type
      */
-    private function getCreditCardData($cardNumber) 
+    public function getCreditCardData($cardNumber) 
     {
         $number = substr($cardNumber, 1, 6);
         $this->endPoint = "/1/cardBin/{$number}";
@@ -115,6 +120,8 @@ class Cielo {
         
         return $this->callBack;
     }
+    
+    
     
     /**
      * Requisição de pagamento
@@ -126,6 +133,7 @@ class Cielo {
      * @return type
      */
     public function paymentRequest(
+        $seller,
         $orderId, 
         $amount, 
         $installments = 1,
@@ -140,7 +148,7 @@ class Cielo {
                 "Type" => "CreditCard",
                 "Amount" => $amount,
                 "Installments" => $installments,
-                "SoftDescriptor" => operator(),
+                "SoftDescriptor" => $seller,
                 "Capture" => $capture,
                 "CreditCard" => [
                     "CardToken" => $cardToken
@@ -165,6 +173,10 @@ class Cielo {
         return $this->callBack;
     }
     
+    public function getMessage(): string {
+        return $this->message;
+    }
+    
     /**
      * Retorna o status da transação de pagamento
      * @param type $transaction
@@ -172,50 +184,32 @@ class Cielo {
      */
     public function transactionStatusPayment($transaction): bool 
     {
-        switch ($transaction->Payment->Status) {
-            case 0:
-                return false;
-            case 1:
-                return false;
-            case 2:
-                return true;
-            case 3:
-                return false;
-
-            default:
-                return false;
-        }
-    }
-    
-    /**
-     * Código de retorno da requisição do pagamento
-     * @param string $code
-     * @return string
-     */
-    public function getCodePayment(string $code): string 
-    {
-        switch ($code) {
-            case '04':
-                return "$code - Operação realizada com sucesso";
-            case '05':
-                return "$code - Não Autorizada";
-            case '06':
-                return "$code - Operação realizada com sucesso";
-            case '57':
-                return "$code - Cartão Expirado";
-            case '78':
-                return "$code - Cartão Bloqueado";
-            case '99':
-                return "$code - Time Out";
-            case '77':
-                return "$code - Cartão Cancelado";
-            case '70':
-                return "$code - Problemas com o Cartão de Crédito";
-            case '99':
-                return "$code - Operation Successful / Time Out";
-
-            default:
-                return "Erro não catalogado";
+        if ($transaction->Payment->Status == 2) {
+            return true;
+        } else {
+            $code = $transaction->Payment->ReturnCode;
+            
+            if ($code == '04') {
+                $this->message = "$code - Operação realizada com sucesso";
+            } elseif ($code == '05') {
+                $this->message = "$code - Não Autorizada";
+            } elseif ($code == '06') {
+                $this->message = "$code - Operação realizada com sucesso";
+            } elseif ($code == '57') {
+                $this->message = "$code - Cartão Expirado";
+            } elseif ($code == '70') {
+                $this->message = "$code - Problemas com o Cartão de Crédito";
+            } elseif ($code == '77') {
+                $this->message = "$code - Cartão Cancelado";
+            } elseif ($code == '78') {
+                $this->message = "$code - Cartão Bloqueado";
+            } elseif ($code == '99') {
+                $this->message = "$code - Operation Successful / Time Out";
+            } else {
+                $this->message = "Erro não catalogado";
+            }
+            
+            return false;
         }
     }
     
