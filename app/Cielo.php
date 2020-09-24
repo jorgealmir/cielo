@@ -3,16 +3,34 @@
 namespace Source\Api;
 
 class Cielo {
+    /** @var string */
     private $merchantId;
+    
+    /** @var string */
     private $merchantKey;
+    
+    /** @var string */
     private $apiUrlQuery;
+    
+    /** @var string */
     private $apiUrl;
+    
+    /** @var string */
     private $headers;
-
+    
+    /** @var string */
     private $endPoint;
+    
+    /** @var string */
     private $params;
+    
+    /** @var string */
     private $callBack;
     
+    /** @var string */
+    private $message;
+
+
     /**
      * Construct
      * @param type $live
@@ -39,6 +57,7 @@ class Cielo {
             "MerchantKey: {$this->merchantKey}"
         ];
     }
+    
     
     /**
      * Cria um cartão de crédito
