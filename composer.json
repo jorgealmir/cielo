@@ -1,0 +1,24 @@
+{
+    "name": "vendor/cielo",
+    "description": "Integração com a API da Cielo.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jorge Almir Martins",
+            "email": "jorgealmirmartins@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+    
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "Source\\": "source/"
+        }
+    }
+}
