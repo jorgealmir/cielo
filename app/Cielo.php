@@ -18,18 +18,17 @@ class Cielo {
      * @param type $live
      */
     public function __construct(
-            string $merchantId, 
-            string $merchantKey, 
-            $live = true
+        string $merchantId, 
+        string $merchantKey, 
+        $live = true
     ) {
+        $this->merchantId = $merchantId;
+        $this->merchantKey = $merchantKey;
+            
         if ($live === true) {
-            $this->merchantId = $merchantId;
-            $this->merchantKey = $merchantKey;
             $this->apiUrlQuery = 'https://apiquery.cieloecommerce.cielo.com.br/';
             $this->apiUrl = 'https://api.cieloecommerce.cielo.com.br/';
         } else {
-            $this->merchantId = $merchantId;
-            $this->merchantKey = $merchantKey;
             $this->apiUrlQuery = 'https://apiquerysandbox.cieloecommerce.cielo.com.br';
             $this->apiUrl = 'https://apisandbox.cieloecommerce.cielo.com.br';
         }
