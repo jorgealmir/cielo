@@ -1,5 +1,5 @@
 {
-    "name": "vendor/cielo",
+    "name": "jorgealmir/cielo",
     "description": "Integração com a API da Cielo.",
     "type": "library",
     "license": "MIT",
@@ -12,9 +12,6 @@
     "minimum-stability": "dev",
     "require": {
     
-    },
-    "config": {
-        "vendor-dir": "vendor"
     },
     "autoload": {
         "psr-4": {
