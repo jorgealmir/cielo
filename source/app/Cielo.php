@@ -136,15 +136,17 @@ class Cielo {
         $seller,
         $orderId, 
         $amount, 
-        $installments = 1,
         $cardToken,
-        $capture = true
+        $installments = 1,
+        $capture = true,
+        $recurrent = true
     ) {
         $this->endPoint = "/1/sales";
         
         $this->params = [
             "MerchantOrderId" => $orderId,
             "Payment" => [
+                "Recurrent" => $recurrent,
                 "Type" => "CreditCard",
                 "Amount" => $amount,
                 "Installments" => $installments,
