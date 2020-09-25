@@ -1,5 +1,5 @@
 {
-    "name": "jorgealmir/cielo",
+    "name": "ja-martins/cielo",
     "description": "Integração com a API da Cielo.",
     "type": "library",
     "license": "MIT",
@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Source\\": "source/"
+            "Cardnet\\": "card-net/"
         }
     }
 }
