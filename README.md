@@ -1,6 +1,6 @@
 # Integração com a Cielo
 
-Esta bíblioteca possui funções que faze a integração com a Cielo
+Esta bíblioteca possui funções que fazem a integração com a Cielo
 
 Para instalar a bíblioteca, execute o seguinte comando:
 
