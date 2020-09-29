@@ -5,7 +5,7 @@ Esta bíblioteca possui funções que fazem a integração com a Cielo
 Para instalar a bíblioteca, execute o seguinte comando:
 
 ``` sh
-composer require jorgealmirmartins/cielo
+composer require ja-martins/cielo
 ```
 
 Para usar a biblioteca, basta usar um require para que o composer carregue automaticamente, crie a classe e chame o método:
