@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-    
+        "coffeecode/datalayer": "1.1.7"
     },
     "config": {
         "vendor-dir": "vendor"

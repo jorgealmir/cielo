@@ -79,6 +79,30 @@ if (! $cielo->transactionStatusPayment($paymentRequest)) {
 }
 ```
 
+Para usar uma base de dados inclua no arquivo Config.php o seguinte:
+
+``` sh
+define("DATA_LAYER_CONFIG", [
+    "driver" => "mysql",
+    "host" => "localhost",
+    "port" => "3306",
+    "dbname" => "datalayer_example",
+    "username" => "root",
+    "passwd" => "",
+    "options" => [
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+        PDO::ATTR_CASE => PDO::CASE_NATURAL
+    ]
+]);
+```
+
+E siga os exemplos em:
+``` sh
+https://packagist.org/packages/coffeecode/datalayer
+```
+
 ### Developer
 * [Jorge Almir Martins] - Desenvolvedor da bíblioteca
 
