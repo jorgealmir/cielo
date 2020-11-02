@@ -12,7 +12,7 @@ use Cielo\API30\Ecommerce\Request\CieloRequestException;
 
 use Src\Message;
 
-class Payment extends Message
+class Payments extends Message
 {
     private $environment;
     private $merchant;
@@ -21,22 +21,18 @@ class Payment extends Message
      * Inicia a classe com o ambiente selecionado
      * @param bool $sandbox
      */
-    public function __construct(bool $sandbox = true) 
+    public function __construct(string $merchantId, string $merchantKey, bool $sandbox = true) 
     {
-        if ($sandbox) {
-            $this->environment = Environment::sandbox();
+        try {
+            if ($sandbox) {
+                $this->environment = Environment::sandbox();
+            } else {
+                $this->environment = Environment::production();
+            }
         
-            $this->merchant = new Merchant(
-                CIELO_SANDBOX_MERCHANT_ID, 
-                CIELO_SANDBOX_MERCHANT_KEY
-            );
-        } else {
-            $this->environment = Environment::production();
-        
-            $this->merchant = new Merchant(
-                CIELO_MERCHANT_ID, 
-                CIELO_MERCHANT_KEY
-            );
+            $this->merchant = new Merchant($merchantId, $merchantKey);
+        } catch (CieloRequestException $e) {
+            $this->setError($e->getCieloError()->getCode());
         }
     }
     

@@ -11,6 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
+        "php": "^7.2",
         "developercielo/api-3.0-php": "^1.0"
     },
     "config": {
