@@ -289,6 +289,8 @@ class Error
             return "Zero Dollar Auth is not enabled";
         } elseif ($code == '323') {
             return "Bin Query is not enabled";
+        } else {
+            return "Erro não catalogado code: " . $code;
         }
     }
 

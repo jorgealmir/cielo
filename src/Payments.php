@@ -40,21 +40,22 @@ class Payments extends Message
      * Pagamento com cartão de crédito
      * @param string $order
      */
-    public function creditCard(string $order) 
+    public function creditCard(string $order, $amount, $cvv, $brand, $expirationDate, $cardNumber, $holder) 
     {
         $sale = new Sale($order);
         
 //        $customer = $sale->customer('Fulano de Tal');
         
-        $payment = $sale->payment(15700);
+        $payment = $sale->payment($amount);
         
         $payment->setCapture(1);
         
         $payment->setType(Payment::PAYMENTTYPE_CREDITCARD)
-                ->creditCard("321", CreditCard::VISA)
-                ->setExpirationDate("10/202a")
-                ->setCardNumber("0000000000000001")
-                ->setHolder("Fulano de Tal");
+            ->creditCard($cvv, $brand)
+            ->setExpirationDate($expirationDate)
+            ->setCardNumber($cardNumber)
+            ->setHolder($holder
+        );
         
         try {
             $retSale = (new CieloEcommerce($this->merchant, $this->environment))->createSale($sale);
