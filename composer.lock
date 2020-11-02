@@ -4,30 +4,76 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff61dbbb3f2f77889ce89fcd2ae34bcb",
+    "content-hash": "7f9027a4335bf64daed4ae0472747504",
     "packages": [
         {
-            "name": "coffeecode/datalayer",
-            "version": "1.1.7",
+            "name": "developercielo/api-3.0-php",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/robsonvleite/datalayer.git",
-                "reference": "6a51fa227bba003be11519e7efa8338bc87460f5"
+                "url": "https://github.com/DeveloperCielo/API-3.0-PHP.git",
+                "reference": "ad3f57731910f58f8baa6cb56e4f605baea38efa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robsonvleite/datalayer/zipball/6a51fa227bba003be11519e7efa8338bc87460f5",
-                "reference": "6a51fa227bba003be11519e7efa8338bc87460f5",
+                "url": "https://api.github.com/repos/DeveloperCielo/API-3.0-PHP/zipball/ad3f57731910f58f8baa6cb56e4f605baea38efa",
+                "reference": "ad3f57731910f58f8baa6cb56e4f605baea38efa",
                 "shasum": ""
             },
             "require": {
-                "ext-pdo": "*",
-                "php": "^7.2"
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.6",
+                "psr/log": "^1.1"
+            },
+            "suggest": {
+                "monolog/monolog": "Allows more advanced logging of the application flow"
             },
             "type": "library",
             "autoload": {
+                "psr-0": {
+                    "Cielo": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Integração com a API 3.0 da Cielo",
+            "homepage": "https://github.com/DeveloperCielo/API-3.0-PHP",
+            "support": {
+                "issues": "https://github.com/DeveloperCielo/API-3.0-PHP/issues",
+                "source": "https://github.com/DeveloperCielo/API-3.0-PHP/tree/master"
+            },
+            "time": "2019-11-20T19:44:20+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "dd738d0b4491f32725492cf345f6b501f5922fec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/dd738d0b4491f32725492cf345f6b501f5922fec",
+                "reference": "dd738d0b4491f32725492cf345f6b501f5922fec",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
                 "psr-4": {
-                    "CoffeeCode\\DataLayer\\": "src"
+                    "Psr\\Log\\": "Psr/Log/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -36,24 +82,21 @@
             ],
             "authors": [
                 {
-                    "name": "Robson V. Leite",
-                    "email": "cursos@upinside.com.br",
-                    "role": "Developer"
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
-            "description": "The data layer is a persistent abstraction component of your database that PDO",
-            "homepage": "http://www.upinside.com.br",
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
             "keywords": [
-                "Coffeecode",
-                "crud",
-                "database",
-                "delete",
-                "destroy",
-                "pdo",
-                "save",
-                "upinside"
+                "log",
+                "psr",
+                "psr-3"
             ],
-            "time": "2020-07-02T17:10:50+00:00"
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/master"
+            },
+            "time": "2020-09-18T06:44:51+00:00"
         }
     ],
     "packages-dev": [],
@@ -63,5 +106,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }

@@ -1,6 +1,6 @@
 {
     "name": "ja-martins/cielo",
-    "description": "Integração com a API da Cielo.",
+    "description": "Integração com a API-3.0 da Cielo.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -11,14 +11,14 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "coffeecode/datalayer": "1.1.7"
+        "developercielo/api-3.0-php": "^1.0"
     },
     "config": {
         "vendor-dir": "vendor"
     },
     "autoload": {
         "psr-4": {
-            "Cardnet\\": "card-net/"
+            "Src\\": "src/"
         }
     }
 }
