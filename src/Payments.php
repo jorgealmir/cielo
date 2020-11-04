@@ -76,12 +76,14 @@ class Payments extends Message
      * @param array $data
      * @return type
      */
-    public function payRecurrence(array $data) {
+    public function payRecurrent(array $data) {
         $sale = new Sale($data['MerchantOrderId']);
 
         $sale->customer($data['Customer']['Name']);
 
         $payment = $sale->payment($data['Payment']['Amount']);
+        
+        $payment->setCapture(1);
 
         $payment->setType(Payment::PAYMENTTYPE_CREDITCARD)
             ->creditCard($data['Payment']['CreditCard']['SecurityCode'], $data['Payment']['CreditCard']['Brand'])
@@ -89,28 +91,23 @@ class Payments extends Message
             ->setCardNumber($data['Payment']['CreditCard']['CardNumber'])
             ->setHolder($data['Payment']['CreditCard']['Holder']);
 
-        // Configure o pagamento recorrente
         $payment->recurrentPayment(true)->setInterval(RecurrentPayment::INTERVAL_MONTHLY);
 
-        // Crie o pagamento na Cielo
         try {
-            // Configure o SDK com seu merchant e o ambiente apropriado para criar a venda
             $paySale = (new CieloEcommerce($this->merchant, $this->environment))->createSale($sale);
-        
-        var_dump($paySale);
-        return;
 
-            $recurrentPaymentId = $paySale->getPayment()->getRecurrentPayment()->getRecurrentPaymentId();
+//            $recurrentPaymentId = $paySale->getPayment()->getPaymentId();
+//            $recurrentTid = $paySale->getPayment()->getTid();
         
-//            var_dump($recurrentPaymentId, $paySale);
-//            return;
+            var_dump($paySale);
+            
+            $this->setMessage(
+                $paySale->getPayment()->getStatus(),
+                $paySale->getPayment()->getReturnCode(), 
+                $paySale->getPayment()->getTid()
+            );
         } catch (CieloRequestException $e) {
-            $error = $e->getCieloError();
-            var_dump($error);
-            $this->setError($e->getCieloError()->getReturnCode());
-            // Em caso de erros de integração, podemos tratar o erro aqui.
-            // os códigos de erro estão todos disponíveis no manual de integração.
-//            $error = $e->getCieloError();
+            $this->setError($e->getCieloError()->getCode());
         }
     }
 }

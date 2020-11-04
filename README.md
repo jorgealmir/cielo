@@ -9,19 +9,20 @@ Integração com a Cielo-3.0
 ## Features
 
 * [x] Create Payment
-    * [x] Credit/Debit Card
-    * [x] Wallet (Visa Checkout / Masterpass / Apple Pay / Samsung Pay)
-    * [x] Boleto
-    * [x] Eletronic Transfer
+    * [x] Credit Card
+    * [ ] Debit Card
+    * [ ] Wallet (Visa Checkout / Masterpass / Apple Pay / Samsung Pay)
+    * [ ] Boleto
+    * [ ] Eletronic Transfer
     * [x] Recurrent
-* [x] Update Payment
-    * [x] Capture
-    * [x] Void
+* [ ] Update Payment
+    * [ ] Capture
+    * [ ] Void
     * [ ] Recurrent Payment
-* [x] Query Payment
-    * [x] By Payment ID
+* [ ] Query Payment
+    * [ ] By Payment ID
     * [ ] By Order ID
-* [x] Query Card Bin
+* [ ] Query Card Bin
 * [ ] Tokenize Card
 * [ ] Fraud Analysis
 * [ ] Velocity
