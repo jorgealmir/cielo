@@ -67,7 +67,10 @@ $cielo = new Payments(
 ```
 
 
-### Credit Card:
+### Creating a credit card payment:
+
+To create a simple credit card payment with the SDK, simply do:
+
 ```php
 /**
  * Payment by credit card
@@ -84,7 +87,7 @@ $cielo->payCreditCard([
 ]);
 ```
 
-### Credit Card Recurrent
+### Creating a recurring payment
 ```php
 /**
  * Recurring payment
