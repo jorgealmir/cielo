@@ -29,12 +29,26 @@ Integration with Cielo-3.0 API
 * [ ] Zero Auth
 * [ ] Silent Order Post
 
-### Para instalar a bíblioteca, execute o seguinte comando:
+### Installation:
+
+If you already have a composer.json file, just add the following dependency to your project:
 
 ```json
 "require": {
     "ja-martins/cielo": "^2.0"
 }
+```
+
+With the dependency added to composer.json, just run:
+
+```
+composer install
+```
+
+Alternatively, you can run directly on your terminal:
+
+```
+composer require "ja-martins/cielo"
 ```
 
 ### To use the library:
