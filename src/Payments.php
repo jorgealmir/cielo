@@ -37,24 +37,24 @@ class Payments extends Message
     }
     
     /**
-     * Pagamento com cartão de crédito
-     * @param string $order
+     * Pagamento com Cartão de crédito
+     * @param array $data
      */
-    public function creditCard(string $order, $amount, $cvv, $brand, $expirationDate, $cardNumber, $holder) 
+    public function payCreditCard(array $data) 
     {
-        $sale = new Sale($order);
+        $sale = new Sale($data['order']);
         
-//        $customer = $sale->customer('Fulano de Tal');
+        $sale->customer($data['customerName']);
         
-        $payment = $sale->payment($amount);
+        $payment = $sale->payment($data['amount']);
         
         $payment->setCapture(1);
         
         $payment->setType(Payment::PAYMENTTYPE_CREDITCARD)
-            ->creditCard($cvv, $brand)
-            ->setExpirationDate($expirationDate)
-            ->setCardNumber($cardNumber)
-            ->setHolder($holder
+            ->creditCard($data['securityCode'], $data['brand'])
+            ->setExpirationDate($data['expirationDate'])
+            ->setCardNumber($data['cardNumber'])
+            ->setHolder($data['holder']
         );
         
         try {
@@ -65,6 +65,8 @@ class Payments extends Message
                 $retSale->getPayment()->getReturnCode(), 
                 $retSale->getPayment()->getTid()
             );
+            
+            var_dump($retSale);
         } catch (CieloRequestException $e) {
             $err = $e->getCieloError()->getCode();
             $this->setError($err);
@@ -97,7 +99,6 @@ class Payments extends Message
             $paySale = (new CieloEcommerce($this->merchant, $this->environment))->createSale($sale);
 
 //            $recurrentPaymentId = $paySale->getPayment()->getPaymentId();
-//            $recurrentTid = $paySale->getPayment()->getTid();
         
             var_dump($paySale);
             
