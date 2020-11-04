@@ -1,6 +1,6 @@
 # Integração com a Cielo
 
-Integração com a Cielo-3.0
+Integration with Cielo-3.0 API
 
 ### Dependencies
 * PHP >= 7.2
@@ -37,7 +37,7 @@ Integração com a Cielo-3.0
 }
 ```
 
-### Para usar a biblioteca:
+### To use the library:
 ```php
 <? php
 
@@ -56,7 +56,7 @@ $cielo = new Payments(
 ### Credit Card:
 ```php
 /**
- * Pagamento no cartão de crédito
+ * Payment by credit card
  */
 $cielo->payCreditCard([
     "order" => "321321321321",
@@ -73,7 +73,7 @@ $cielo->payCreditCard([
 ### Credit Card Recurrent
 ```php
 /**
- * Pagamento Recorrente
+ * Recurring payment
  */
 $cielo->payRecurrent([
     "MerchantOrderId" => "2014113245231706",
