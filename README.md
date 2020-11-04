@@ -1,106 +1,68 @@
 # Integração com a Cielo
 
-Esta bíblioteca possui funções que fazem a integração com a Cielo
+Integração com a Cielo-3.0
 
-Para instalar a bíblioteca, execute o seguinte comando:
+## Dependencies
+* PHP >= 7.2
+* developercielo/api-3.0-php
 
-``` sh
-composer require ja-martins/cielo
+## Features
+
+* [x] Create Payment
+    * [x] Credit/Debit Card
+    * [x] Wallet (Visa Checkout / Masterpass / Apple Pay / Samsung Pay)
+    * [x] Boleto
+    * [x] Eletronic Transfer
+    * [x] Recurrent
+* [x] Update Payment
+    * [x] Capture
+    * [x] Void
+    * [ ] Recurrent Payment
+* [x] Query Payment
+    * [x] By Payment ID
+    * [ ] By Order ID
+* [x] Query Card Bin
+* [ ] Tokenize Card
+* [ ] Fraud Analysis
+* [ ] Velocity
+* [ ] Zero Auth
+* [ ] Silent Order Post
+
+## Para instalar a bíblioteca, execute o seguinte comando:
+
+```json
+"require": {
+    "ja-martins/cielo": "^2.0"
+}
 ```
 
-Para usar a biblioteca, basta usar um require para que o composer carregue automaticamente, crie a classe e chame o método:
-``` sh
+## Para usar a biblioteca:
+```php
 <? php
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Source\App\Cielo;
+use Src\Payments;
 
-$cielo = new Cielo(
-    'merchantId',
-    'merchantKey',
-    "true = Production/false = Sandbox" 
+$cielo = new Payments(
+    "merchantId", 
+    "merchantKey", 
+    true // = sandbox e false = production
 );
-
-// Cria o cartão na Cielo
-$createCard = $cielo->createCreditCard(
-    "Nome do usuário do cartão", 
-    "Número do cartão (Sem mascara)",
-    "Nome do usuário do cartão (Como esta no cartão)", 
-    "Data do vencimento do cartão (mm/yyyy)", 
-    "Bandeira do cartão"
-);
-
-// Tratamento do retorno do método
-if (!empty($createCard->Message)) {
-    echo "Mensagem: {$createCard->Message}";
-} else {
-    var_dump($createCard);
-}
-
-
-
-// Consulta o cartão na Cielo
-$queryCard = $cielo->getCreditCard("cardToken");
-
-// Tratamento do retorno do método
-if (empty($queryCard)) {
-    echo 'Cartão não foi encontrado';
-} else {
-    var_dump($queryCard);
-}
-
-
-
-// Consulta dados do cartão de crédito
-$queryCardData = $cielo->getCreditCardData("Número do cartão");
-
-// Retorno do método
-var_dump($queryCardData);
-
-
-
-// Requisição de pagamento
-$paymentRequest = $cielo->paymentRequest(
-    "Nome do vendedor", // Não poderá ser maior que 13 caracteres
-    "Número do Pedido", 
-    "Valor", 
-    "CardToken",
-    "Número de parcelas",   // default 1
-    "Captura true/false",   // default true
-    "Recorrente true/false" // default true
-);
-
-// Tratamento do retorno do método
-if (! $cielo->transactionStatusPayment($paymentRequest)) {
-    echo $cielo->getMessage();
-} else {
-    var_dump($paymentRequest);
-}
 ```
 
-Para usar uma base de dados inclua no arquivo Config.php o seguinte:
 
-``` sh
-define("DATA_LAYER_CONFIG", [
-    "driver" => "mysql",
-    "host" => "localhost",
-    "port" => "3306",
-    "dbname" => "datalayer_example",
-    "username" => "root",
-    "passwd" => "",
-    "options" => [
-        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-        PDO::ATTR_CASE => PDO::CASE_NATURAL
-    ]
-]);
-```
-
-E siga os exemplos em:
-``` sh
-https://packagist.org/packages/coffeecode/datalayer
+## Cartão de Crédito:
+```php
+$cielo->creditCard(
+    "123", // Número do pedido
+    15700, // Valor do pedido
+    321, // Código de segurança
+    "Visa", Bandeira 
+    "10/2023", // Data de expiração
+    "0000000000000001", // Número do cartão
+    "Fulano de Tal" // Nome no cartão
+);
 ```
 
 ### Developer
