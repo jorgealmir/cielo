@@ -2,11 +2,11 @@
 
 Integração com a Cielo-3.0
 
-## Dependencies
+### Dependencies
 * PHP >= 7.2
 * developercielo/api-3.0-php
 
-## Features
+### Features
 
 * [x] Create Payment
     * [x] Credit Card
@@ -29,7 +29,7 @@ Integração com a Cielo-3.0
 * [ ] Zero Auth
 * [ ] Silent Order Post
 
-## Para instalar a bíblioteca, execute o seguinte comando:
+### Para instalar a bíblioteca, execute o seguinte comando:
 
 ```json
 "require": {
@@ -37,7 +37,7 @@ Integração com a Cielo-3.0
 }
 ```
 
-## Para usar a biblioteca:
+### Para usar a biblioteca:
 ```php
 <? php
 
@@ -53,17 +53,53 @@ $cielo = new Payments(
 ```
 
 
-## Cartão de Crédito:
+### Credit Card:
 ```php
-$cielo->creditCard(
-    "123", // Número do pedido
-    15700, // Valor do pedido
-    321, // Código de segurança
-    "Visa", Bandeira 
-    "10/2023", // Data de expiração
-    "0000000000000001", // Número do cartão
-    "Fulano de Tal" // Nome no cartão
-);
+/**
+ * Pagamento no cartão de crédito
+ */
+$cielo->payCreditCard([
+    "order" => "321321321321",
+    "amount" => 15700,
+    "securityCode" => "321",
+    "brand" => "Visa",
+    "expirationDate" => "10/2023",
+    "cardNumber" => "0000000000000001",
+    "holder" => "Fulano de Tall",
+    "customerName" => "Fulano de Tal"
+]);
+```
+
+### Credit Card Recurrent
+```php
+/**
+ * Pagamento Recorrente
+ */
+$cielo->payRecurrent([
+    "MerchantOrderId" => "2014113245231706",
+    "Customer" => [
+        "Name" => "Comprador rec programada"
+    ],
+    "Payment" => [
+        "Type" => 'CreditCard',
+        "Amount" => 15700, // 157,00
+        "Installments" => 1,
+        "SoftDescriptor" => "Your Company",
+        "RecurrentPayment" => [
+            "AuthorizeNow" => true,
+            "EndDate" => "2019-12-01",
+            "Interval" => "SemiAnnual"
+        ],
+        "CreditCard" => [
+            "CardNumber" => "4532378093777141", //"4485070956267065",
+            "Holder" => "Holder",
+            "ExpirationDate" => "07/2021", //"08/2022",
+            "SecurityCode" => "241", //"842",
+            "SaveCard" => false,
+            "Brand" => "Visa"
+        ]
+    ]
+]);
 ```
 
 ### Developer
