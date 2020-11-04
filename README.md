@@ -108,10 +108,10 @@ $cielo->payRecurrent([
             "Interval" => "SemiAnnual"
         ],
         "CreditCard" => [
-            "CardNumber" => "4532378093777141", //"4485070956267065",
+            "CardNumber" => "4532378093777141",
             "Holder" => "Holder",
-            "ExpirationDate" => "07/2021", //"08/2022",
-            "SecurityCode" => "241", //"842",
+            "ExpirationDate" => "07/2021",
+            "SecurityCode" => "241",
             "SaveCard" => false,
             "Brand" => "Visa"
         ]
