@@ -23,7 +23,7 @@ Integration with Cielo-3.0 API
     * [ ] By Payment ID
     * [ ] By Order ID
 * [ ] Query Card Bin
-* [ ] Tokenize Card
+* [x] Tokenize Card
 * [ ] Fraud Analysis
 * [ ] Velocity
 * [ ] Zero Auth
@@ -64,6 +64,22 @@ $cielo = new Payments(
     "merchantKey", 
     true // = sandbox e false = production
 );
+```
+
+### Creating tokenizing a card
+
+```php
+/**
+ * Tokenizing a card
+ */
+$cielo->tokenizingCard([
+    "customerName" => "Comprador Teste Cielo",
+    "cardNumber" => "4532378093777141",
+    "holder" => "Comprador T Cielo",
+    "expirationDate" => "08/2022",
+    "securityCode" => "241",
+    "brand" => "Visa"
+]);
 ```
 
 

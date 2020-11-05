@@ -16,6 +16,7 @@ class Message extends Error
     private $message;
     private $texto;
     private $tid;
+    private $token;
     private $error;
 
 
@@ -25,11 +26,12 @@ class Message extends Error
      * @param type $code
      * @param type $tid
      */
-    public function setMessage($status, $code, $tid = '') 
+    public function setMessage($status, $code, $tid, $token) 
     {
         $this->status = $status;
         $this->code = $code;
         $this->tid = $tid;
+        $this->token = $token;
     }
     
     /**
@@ -63,6 +65,8 @@ class Message extends Error
             $this->texto = 'Pagamento cancelado por falha no processamento ou por ação do AF';
         } elseif ($this->status == 20) {
             $this->texto = 'Recorrência agendada';
+        } elseif ($this->status == 21) {
+            $this->texto = 'CardToken criado com sucesso';
         }
         
         
@@ -71,6 +75,8 @@ class Message extends Error
          */
         if ($this->status == 2) {
             return $this->texto . ' TID ' . $this->tid;
+        } elseif ($this->status == 21) {
+            return $this->texto . '. Token: ' . $this->token; 
         } else {
             if ($this->code == '05') {
                 $this->message = 'Não Autorizado';
@@ -93,5 +99,15 @@ class Message extends Error
     public function setError(string $message) 
     {
         $this->error = $message;
+    }
+    
+    public function getTid(): string
+    {
+        return $this->tid;
+    }
+    
+    public function getToken(): string
+    {
+        return $this->token;
     }
 }

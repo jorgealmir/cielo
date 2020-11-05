@@ -8,6 +8,7 @@ use Cielo\API30\Ecommerce\Sale;
 use Cielo\API30\Ecommerce\Payment;
 use Cielo\API30\Ecommerce\RecurrentPayment;
 use Cielo\API30\Ecommerce\CieloEcommerce;
+use Cielo\API30\Ecommerce\CreditCard;
 use Cielo\API30\Ecommerce\Request\CieloRequestException;
 
 use Src\Message;
@@ -31,6 +32,28 @@ class Payments extends Message
             }
         
             $this->merchant = new Merchant($merchantId, $merchantKey);
+        } catch (CieloRequestException $e) {
+            $this->setError($e->getCieloError()->getCode());
+        }
+    }
+    
+    public function tokenizingCard(array $data) 
+    { 
+        $card = new CreditCard();
+        $card->setCustomerName($data['customerName']);
+        $card->setCardNumber($data['cardNumber']);
+        $card->setHolder($data['holder']);
+        $card->setExpirationDate($data['expirationDate']);
+        $card->setSecurityCode($data['securityCode']);
+        $card->setBrand($data['brand']);
+        // CardToken: 495db52c-17c8-4698-af28-98bdff5b5339
+
+        try {
+            $respCard = (new CieloEcommerce($this->merchant, $this->environment))->tokenizeCard($card);
+            
+            $cardToken = $respCard->getCardToken();
+        
+            $this->setMessage(21, "", "", $cardToken);
         } catch (CieloRequestException $e) {
             $this->setError($e->getCieloError()->getCode());
         }
