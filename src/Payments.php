@@ -59,6 +59,37 @@ class Payments extends Message
         }
     }
     
+    public function payCreditCardTokenized(array $data) 
+    {
+        $sale = new Sale($data['order']);
+
+        $sale->customer($data['customerName']);
+
+        $payment = $sale->payment($data['amount']);
+        
+        $payment->setCapture(1);
+
+        $payment->setType(Payment::PAYMENTTYPE_CREDITCARD)
+                ->creditCard($data['securityCode'], $data['brand'])
+                ->setCardToken($data['cardToken']);
+
+        try {
+            $responseSale = (new CieloEcommerce($this->merchant, $this->environment))->createSale($sale);
+            
+            $this->setMessage(
+                $responseSale->getPayment()->getStatus(),
+                $responseSale->getPayment()->getReturnCode()
+            );
+            
+            $this->setTid($responseSale->getPayment()->getTid());
+            $this->setPaymentId($responseSale->getPayment()->getPaymentId());
+            
+            var_dump($responseSale);
+        } catch (CieloRequestException $e) {
+            $this->setError($e->getCieloError()->getCode());
+        }
+    }
+    
     /**
      * Pagamento com Cartão de crédito
      * @param array $data

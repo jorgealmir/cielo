@@ -17,6 +17,7 @@ class Message extends Error
     private $texto;
     private $tid;
     private $token;
+    private $paymentId;
     private $error;
 
 
@@ -26,12 +27,10 @@ class Message extends Error
      * @param type $code
      * @param type $tid
      */
-    public function setMessage($status, $code, $tid, $token) 
+    public function setMessage($status, $code) 
     {
         $this->status = $status;
         $this->code = $code;
-        $this->tid = $tid;
-        $this->token = $token;
     }
     
     /**
@@ -101,13 +100,33 @@ class Message extends Error
         $this->error = $message;
     }
     
+    public function setTid($value) 
+    {
+        $this->tid = $value;
+    }
+    
     public function getTid(): string
     {
         return $this->tid;
     }
     
+    public function setToken($value) 
+    {
+        $this->token = $value;
+    }
+    
     public function getToken(): string
     {
         return $this->token;
+    }
+    
+    public function setPaymentId($value) 
+    {
+        $this->paymentId = $value;
+    }
+    
+    public function getPaymentId() 
+    {
+        return $this->paymentId;
     }
 }

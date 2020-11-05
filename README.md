@@ -82,6 +82,19 @@ $cielo->tokenizingCard([
 ]);
 ```
 
+### Creating a tokenized credit card payment
+
+```php
+$cielo->payCreditCardTokenized([
+    "order" => "321321321321",
+    "customerName" => "Teste Customer",
+    "amount" => 15700,
+    "securityCode" => "321",
+    "brand" => "Visa",
+    "cardToken" => "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+]);
+```
+
 
 ### Creating a credit card payment:
 
