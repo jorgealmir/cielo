@@ -10,6 +10,8 @@ Integration with Cielo-3.0 API
 
 * [x] Create Payment
     * [x] Credit Card
+    * [x] Query Credit Card
+    * [x] Query Credit Card Details
     * [ ] Debit Card
     * [ ] Wallet (Visa Checkout / Masterpass / Apple Pay / Samsung Pay)
     * [ ] Boleto
@@ -19,8 +21,8 @@ Integration with Cielo-3.0 API
     * [ ] Capture
     * [ ] Void
     * [ ] Recurrent Payment
-* [ ] Query Payment
-    * [ ] By Payment ID
+* [x] Query Payment
+    * [x] By Payment ID
     * [ ] By Order ID
 * [ ] Query Card Bin
 * [x] Tokenize Card
@@ -64,6 +66,24 @@ $cielo = new Payments(
     "merchantKey", 
     true // = sandbox e false = production
 );
+```
+
+### Consulting a credit card
+
+```php
+$card = $cielo->getCreditCard($cardToken);
+```
+
+### Checking credit card details
+
+```php
+$card = $cielo->getCreditCardData($cardNumber);
+```
+
+### Query by PaymentId
+
+```php
+$pay = $cielo->queryByPaymentId("$paymentId");
 ```
 
 ### Creating tokenizing a card

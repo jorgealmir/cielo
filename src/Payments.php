@@ -15,6 +15,16 @@ use Src\Message;
 
 class Payments extends Message
 {
+    private $merchantId;
+    private $merchantKey;
+    private $apiUrlQuery;
+    private $apiUrl;
+    private $headers;
+
+    private $endPoint;
+    private $params;
+    private $callBack;
+    
     private $environment;
     private $merchant;
     
@@ -24,6 +34,23 @@ class Payments extends Message
      */
     public function __construct(string $merchantId, string $merchantKey, bool $sandbox = true) 
     {
+        $this->merchantId = $merchantId;
+        $this->merchantKey = $merchantKey;
+        
+        if ($sandbox === true) {
+            $this->apiUrlQuery = 'https://apiquerysandbox.cieloecommerce.cielo.com.br';
+            $this->apiUrl = 'https://apisandbox.cieloecommerce.cielo.com.br';
+        } else {
+            $this->apiUrlQuery = 'https://apiquery.cieloecommerce.cielo.com.br/';
+            $this->apiUrl = 'https://api.cieloecommerce.cielo.com.br/';
+        }
+        
+        $this->headers = [
+            "Content-Type: application/json",
+            "MerchantId: {$this->merchantId}",
+            "MerchantKey: {$this->merchantKey}"
+        ];
+        
         try {
             if ($sandbox) {
                 $this->environment = Environment::sandbox();
@@ -70,8 +97,8 @@ class Payments extends Message
         $payment->setCapture(1);
 
         $payment->setType(Payment::PAYMENTTYPE_CREDITCARD)
-                ->creditCard($data['securityCode'], $data['brand'])
-                ->setCardToken($data['cardToken']);
+            ->creditCard($data['securityCode'], $data['brand'])
+            ->setCardToken($data['cardToken']);
 
         try {
             $responseSale = (new CieloEcommerce($this->merchant, $this->environment))->createSale($sale);
@@ -94,38 +121,43 @@ class Payments extends Message
      * Pagamento com Cartão de crédito
      * @param array $data
      */
-    public function payCreditCard(array $data) 
-    {
-        $sale = new Sale($data['order']);
-        
-        $sale->customer($data['customerName']);
-        
-        $payment = $sale->payment($data['amount']);
-        
-        $payment->setCapture(1);
-        
-        $payment->setType(Payment::PAYMENTTYPE_CREDITCARD)
-            ->creditCard($data['securityCode'], $data['brand'])
-            ->setExpirationDate($data['expirationDate'])
-            ->setCardNumber($data['cardNumber'])
-            ->setHolder($data['holder']
-        );
-        
-        try {
-            $retSale = (new CieloEcommerce($this->merchant, $this->environment))->createSale($sale);
-            
-            $this->setMessage(
-                $retSale->getPayment()->getStatus(),
-                $retSale->getPayment()->getReturnCode(), 
-                $retSale->getPayment()->getTid()
-            );
-            
-            var_dump($retSale);
-        } catch (CieloRequestException $e) {
-            $err = $e->getCieloError()->getCode();
-            $this->setError($err);
-        }
-    }
+//    public function payCreditCard(array $data) 
+//    {
+//        $sale = new Sale($data['order']);
+//        
+//        $sale->customer($data['customerName']);
+//        
+//        $payment = $sale->payment($data['amount']);
+//        
+//        $payment->setCapture(1);
+//        
+//        $payment->setType(Payment::PAYMENTTYPE_CREDITCARD)
+//            ->creditCard($data['securityCode'], $data['brand'])
+//            ->setExpirationDate($data['expirationDate'])
+//            ->setCardNumber($data['cardNumber'])
+//            ->setHolder($data['holder'])
+//            ->setSaveCard(true);
+//        
+//        try {
+//            $retSale = (new CieloEcommerce($this->merchant, $this->environment))->createSale($sale);
+//           
+//            $token = $retSale->getPayment()->getCreditCard()->getCardToken();
+//            var_dump($token);
+//            
+//            $this->setMessage(
+//                $retSale->getPayment()->getStatus(),
+//                $retSale->getPayment()->getReturnCode()
+//            );
+//            
+//            $this->setTid($retSale->getPayment()->getTid());
+//            $this->setPaymentId($retSale->getPayment()->getPaymentId());
+//            
+//            var_dump($retSale);
+//        } catch (CieloRequestException $e) {
+//            $err = $e->getCieloError()->getCode();
+//            $this->setError($err);
+//        }
+//    }
     
     /**
      * Pay Recurrent
@@ -164,5 +196,103 @@ class Payments extends Message
         } catch (CieloRequestException $e) {
             $this->setError($e->getCieloError()->getCode());
         }
+    }
+    
+    
+    /*
+     * Sem API
+     */
+    
+    public function getCreditCard($cardToken) 
+    {
+        $this->endPoint = "/1/card/{$cardToken}";
+        $this->get();
+        
+        return $this->callBack;
+    }
+    
+    public function getCreditCardData($cardNumber) 
+    {
+        $number = substr($cardNumber, 1, 6);
+        $this->endPoint = "/1/cardBin/{$number}";
+        $this->get();
+        
+        return $this->callBack;
+    }
+    
+    public function queryByPaymentId($paymentId) 
+    {
+        $this->endPoint = "/1/sales/{$paymentId}";
+        $this->get();
+        
+        $pay = (array) $this->callBack;
+        
+        $this->setMessage($pay['Payment']->Status, "");
+        
+        $this->setTid($pay['Payment']->Tid);
+        
+        return $pay;
+    }
+    
+    public function payWithCreditCard(array $data) 
+    {
+        $this->endPoint = "/1/sales/";
+        
+        $this->params = $data;
+        
+        $this->post();
+        
+        $card = (array) $this->callBack;
+            
+        $this->setMessage(
+            $card['Payment']->Status,
+            $card['Payment']->ReturnCode
+        );
+        
+        $this->setTid($card['Payment']->Tid);
+        $this->setPaymentId($card['Payment']->PaymentId);
+        
+        return $card;
+    }
+    
+    private function post() 
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $this->apiUrl . $this->endPoint,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($this->params),
+            CURLOPT_HTTPHEADER => $this->headers,
+        ]);
+        
+        $this->callBack = json_decode(curl_exec($curl));
+
+        curl_close($curl);
+    }
+    
+    private function get() 
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $this->apiUrlQuery . $this->endPoint,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => $this->headers,
+        ]);
+        
+        $this->callBack = json_decode(curl_exec($curl));
+
+        curl_close($curl);
     }
 }
