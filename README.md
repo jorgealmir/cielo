@@ -11,6 +11,7 @@ Integration with Cielo-3.0 API
 * [x] Credit Card
     * [x] Query Credit Card
     * [x] Query Credit Card Details
+    * [x] Query Credit Card Recurrent
 * [x] Create Payment
     * [x] Credit Card
     * [ ] Debit Card
@@ -103,6 +104,18 @@ if ($cielo->getStatus() == 0) {
 }
 ```
 
+### Query Recurrent Payment ID
+
+```php
+$recurrent = $cielo->queryRecurrent($recurrentPaymentId);
+
+var_dump($cielo->getMessage());
+
+if ($cielo->getStatus() == 1) {
+    var_dump($recurrent);
+}
+```
+
 ### Creating tokenizing a card
 
 ```php
@@ -177,7 +190,7 @@ var_dump($card);
 /**
  * Recurring payment
  */
-$cielo->payRecurrent([
+$payRecurrent = $cielo->scheduledRecurrence([
     "MerchantOrderId" => "2014113245231706",
     "Customer" => [
         "Name" => "Comprador rec programada"
@@ -187,6 +200,7 @@ $cielo->payRecurrent([
         "Amount" => 15700, // 157,00
         "Installments" => 1,
         "SoftDescriptor" => "Your Company",
+        "Capture" => true,
         "RecurrentPayment" => [
             "AuthorizeNow" => true,
             "EndDate" => "2019-12-01",
@@ -202,6 +216,12 @@ $cielo->payRecurrent([
         ]
     ]
 ]);
+
+var_dump($cielo->getMessage());
+
+if ($cielo->confirmed()) {
+    var_dump($payRecurrent);
+}
 ```
 
 ### Developer

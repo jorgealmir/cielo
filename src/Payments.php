@@ -203,6 +203,9 @@ class Payments extends Message
      * Sem API
      */
     
+    /*
+     * Transações com GETs
+     */
     public function getCreditCard($cardToken) 
     {
         $this->endPoint = "/1/card/{$cardToken}";
@@ -248,6 +251,25 @@ class Payments extends Message
         return $order;
     }
     
+    public function queryRecurrent($recurrentPaymentId) 
+    {
+        $this->endPoint = "/1/RecurrentPayment/{$recurrentPaymentId}";
+        
+        $this->get();
+        
+        $recurrent = (array) $this->callBack;
+        
+        $this->setMessage($recurrent['RecurrentPayment']->Status, "");
+        
+        return $recurrent;
+    }
+    
+    
+    
+    
+    /*
+     * Transações com POSTs
+     */
     public function payWithCreditCard(array $data) 
     {
         $this->endPoint = "/1/sales/";
@@ -269,6 +291,35 @@ class Payments extends Message
         return $card;
     }
     
+    
+    
+    public function scheduledRecurrence(array $data) 
+    {
+        $this->endPoint = "/1/sales/";
+        
+        $this->params = $data;
+        
+        $this->post();
+        
+        $recurrence = (array) $this->callBack;
+        
+        $this->setMessage(
+            $recurrence['Payment']->Status, 
+            $recurrence['Payment']->ReturnCode
+        );
+        
+        $this->setTid($recurrence['Payment']->Tid);
+        $this->setPaymentId($recurrence['Payment']->PaymentId);
+        $this->setRecurrentPaymentId($recurrence['Payment']->RecurrentPayment->RecurrentPaymentId);
+        
+        return $recurrence;
+    }
+    
+    
+    
+    /*
+     * Privaties
+     */    
     private function post() 
     {
         $curl = curl_init();

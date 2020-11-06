@@ -18,6 +18,7 @@ class Message extends Error
     private $tid;
     private $token;
     private $paymentId;
+    private $recurrentPaymentId;
     private $error;
 
 
@@ -130,8 +131,23 @@ class Message extends Error
         return $this->paymentId;
     }
     
+    public function setRecurrentPaymentId($value) 
+    {
+        $this->recurrentPaymentId = $value;
+    }
+    
+    public function getRecurrentPaymentId() 
+    {
+        return $this->recurrentPaymentId;
+    }
+    
     public function getStatus() 
     {
         return $this->status;
+    }
+    
+    public function confirmed() 
+    {
+        return $this->status == 2;
     }
 }
