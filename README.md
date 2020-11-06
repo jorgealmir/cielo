@@ -8,10 +8,11 @@ Integration with Cielo-3.0 API
 
 ### Features
 
-* [x] Create Payment
-    * [x] Credit Card
+* [x] Credit Card
     * [x] Query Credit Card
     * [x] Query Credit Card Details
+* [x] Create Payment
+    * [x] Credit Card
     * [ ] Debit Card
     * [ ] Wallet (Visa Checkout / Masterpass / Apple Pay / Samsung Pay)
     * [ ] Boleto
@@ -23,7 +24,7 @@ Integration with Cielo-3.0 API
     * [ ] Recurrent Payment
 * [x] Query Payment
     * [x] By Payment ID
-    * [ ] By Order ID
+    * [x] By Order ID
 * [ ] Query Card Bin
 * [x] Tokenize Card
 * [ ] Fraud Analysis
@@ -84,6 +85,22 @@ $card = $cielo->getCreditCardData($cardNumber);
 
 ```php
 $pay = $cielo->queryByPaymentId("$paymentId");
+
+var_dump($cielo->getMessage());
+
+var_dump($pay);
+```
+
+### Query by merchant order ID
+
+```php
+$order = $cielo->queryByOrderId($merchantOrderId);
+
+var_dump($cielo->getMessage());
+
+if ($cielo->getStatus() == 0) {
+    var_dump($order);
+}
 ```
 
 ### Creating tokenizing a card
@@ -124,16 +141,35 @@ To create a simple credit card payment with the SDK, simply do:
 /**
  * Payment by credit card
  */
-$cielo->payCreditCard([
-    "order" => "321321321321",
-    "amount" => 15700,
-    "securityCode" => "321",
-    "brand" => "Visa",
-    "expirationDate" => "10/2023",
-    "cardNumber" => "0000000000000001",
-    "holder" => "Fulano de Tall",
-    "customerName" => "Fulano de Tal"
+$card = $cielo->payWithCreditCard([
+    "MerchantOrderId" => "2014111703",
+    "Customer" => [
+        "Name" => "Comprador crédito simples"
+    ],
+    "Payment" => [
+        "Type" => "CreditCard",
+        "Amount" => 15700,
+        "Installments" => 1,
+        "SoftDescriptor" => "123456789ABCD",
+        "Capture" => true,
+        "CreditCard" => [
+            "CardNumber" => "1234123412341231",
+            "Holder" => "Teste Holder",
+            "ExpirationDate" => "12/2030",
+            "SecurityCode" => "123",
+            "Brand" => "Visa",
+            "SaveCard" => true
+        ]
+    ]
 ]);
+
+var_dump($cielo->getTid());
+
+var_dump($cielo->getPaymentId());
+
+var_dump($cielo->getMessage());
+
+var_dump($card);
 ```
 
 ### Creating a recurring payment

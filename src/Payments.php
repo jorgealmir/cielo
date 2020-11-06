@@ -223,6 +223,7 @@ class Payments extends Message
     public function queryByPaymentId($paymentId) 
     {
         $this->endPoint = "/1/sales/{$paymentId}";
+        
         $this->get();
         
         $pay = (array) $this->callBack;
@@ -232,6 +233,19 @@ class Payments extends Message
         $this->setTid($pay['Payment']->Tid);
         
         return $pay;
+    }
+    
+    public function queryByOrderId($merchantOrderId) 
+    {
+        $this->endPoint = "/1/sales?merchantOrderId={$merchantOrderId}";
+        
+        $this->get();
+        
+        $order = (array) $this->callBack;
+        
+        $this->setMessage($order['ReasonCode'], "");
+        
+        return $order;
     }
     
     public function payWithCreditCard(array $data) 

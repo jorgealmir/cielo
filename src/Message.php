@@ -129,4 +129,9 @@ class Message extends Error
     {
         return $this->paymentId;
     }
+    
+    public function getStatus() 
+    {
+        return $this->status;
+    }
 }
