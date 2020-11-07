@@ -86,6 +86,10 @@ if (!empty($card)) {
 
 ```php
 $card = $cielo->getCreditCardData($cardNumber);
+
+if (!empty($card)) {
+    var_dump($card);
+}
 ```
 
 ### Query by PaymentId
