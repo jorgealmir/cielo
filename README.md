@@ -76,6 +76,10 @@ $cielo = new Payments(
 
 ```php
 $card = $cielo->getCreditCard($cardToken);
+
+if (!empty($card)) {
+    var_dump($card);
+}
 ```
 
 ### Checking credit card details
@@ -116,22 +120,6 @@ var_dump($cielo->getMessage());
 if ($cielo->getStatus() == 1) {
     var_dump($recurrent);
 }
-```
-
-### Creating tokenizing a card
-
-```php
-/**
- * Tokenizing a card
- */
-$cielo->tokenizingCard([
-    "customerName" => "Comprador Teste Cielo",
-    "cardNumber" => "4532378093777141",
-    "holder" => "Comprador T Cielo",
-    "expirationDate" => "08/2022",
-    "securityCode" => "241",
-    "brand" => "Visa"
-]);
 ```
 
 ### Creating a tokenized credit card payment
