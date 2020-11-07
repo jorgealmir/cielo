@@ -24,7 +24,9 @@ class Payments extends Message
     private $endPoint;
     private $params;
     private $callBack;
-    
+    private $curlError;
+
+
     private $environment;
     private $merchant;
     
@@ -318,6 +320,30 @@ class Payments extends Message
     
     
     /*
+     * Tranzações com PUTs
+     */
+    public function ModifyingBuyerDataRecurrent(array $data, $recurrentPaymentId) 
+    {
+        $this->endPoint = "/1/RecurrentPayment/{$recurrentPaymentId}/Customer";
+        
+        $this->params = $data;
+        
+        $this->put();
+
+        if ($this->curlError) {
+            return "cURL Error #:" . $this->curlError;
+        } else {
+            $buyer = $this->callBack;
+        
+            var_dump($buyer);
+
+            return $buyer;
+        }
+    }
+    
+    
+    
+    /*
      * Privaties
      */    
     private function post() 
@@ -347,17 +373,23 @@ class Payments extends Message
 
         curl_setopt_array($curl, [
             CURLOPT_URL => $this->apiUrl . $this->endPoint,
+            CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "PUT",
-            CURLOPT_POSTFIELDS => json_encode($this->params),
             CURLOPT_HTTPHEADER => $this->headers,
+            CURLOPT_POSTFIELDS => json_encode($this->params)
+//          CURLOPT_RETURNTRANSFER => true,
+//          CURLOPT_ENCODING => "",
+//          CURLOPT_MAXREDIRS => 10,
+//          CURLOPT_TIMEOUT => 30,
+//          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+////          CURLOPT_PUT => true,  
+//          CURLOPT_CUSTOMREQUEST => "PUT",
+//          CURLOPT_POSTFIELDS => json_encode($this->params),
+//          CURLOPT_HTTPHEADER => $this->headers,
         ]);
-        
+
         $this->callBack = json_decode(curl_exec($curl));
+        $this->curlError = curl_error($curl);
 
         curl_close($curl);
     }

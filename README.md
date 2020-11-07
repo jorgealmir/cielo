@@ -20,6 +20,7 @@ Integration with Cielo-3.0 API
     * [ ] Eletronic Transfer
     * [x] Recurrent
 * [ ] Update Payment
+    * [ ] Buyer Data Recurrent
     * [ ] Capture
     * [ ] Void
     * [ ] Recurrent Payment
