@@ -319,7 +319,18 @@ class Payments extends Message
     
     
     
-    
+    public function creatingTokenizedCard(array $data) 
+    {
+        $this->endPoint = "/1/card/";
+        
+        $this->params = $data;
+        
+        $this->post();
+        
+        $tokenized = $this->callBack;
+        
+        return $tokenized;
+    }
     
     
     

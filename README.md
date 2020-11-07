@@ -28,7 +28,8 @@ Integration with Cielo-3.0 API
     * [x] By Payment ID
     * [x] By Order ID
 * [ ] Query Card Bin
-* [x] Tokenize Card
+* [x] Credit Card Tokenizations
+    * [x] creating a tokenized card
 * [ ] Fraud Analysis
 * [ ] Velocity
 * [ ] Zero Auth
@@ -222,6 +223,22 @@ var_dump($cielo->getMessage());
 
 if ($cielo->confirmed()) {
     var_dump($payRecurrent);
+}
+```
+
+### Creating Tokenized Card
+
+```php
+$tokenized = $cielo->creatingTokenizedCard([
+    "CustomerName" => "Comprador Teste Cielo",
+    "CardNumber" => "4929756094783682",
+    "Holder" => "Comprador T Cielo",
+    "ExpirationDate" => "08/2021",
+    "Brand" => "Visa"
+]);
+
+if (!empty($tokenized->CardToken)) {
+    var_dump($tokenized->CardToken);
 }
 ```
 
