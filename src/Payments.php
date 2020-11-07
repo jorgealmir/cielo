@@ -53,17 +53,17 @@ class Payments extends Message
             "MerchantKey: {$this->merchantKey}"
         ];
         
-        try {
-            if ($sandbox) {
-                $this->environment = Environment::sandbox();
-            } else {
-                $this->environment = Environment::production();
-            }
-        
-            $this->merchant = new Merchant($merchantId, $merchantKey);
-        } catch (CieloRequestException $e) {
-            $this->setError($e->getCieloError()->getCode());
-        }
+//        try {
+//            if ($sandbox) {
+//                $this->environment = Environment::sandbox();
+//            } else {
+//                $this->environment = Environment::production();
+//            }
+//        
+//            $this->merchant = new Merchant($merchantId, $merchantKey);
+//        } catch (CieloRequestException $e) {
+//            $this->setError($e->getCieloError()->getCode());
+//        }
     }
     
 //    public function tokenizingCard(array $data) 
@@ -316,6 +316,10 @@ class Payments extends Message
         
         return $recurrence;
     }
+    
+    
+    
+    
     
     
     
