@@ -1,17 +1,6 @@
 <?php
 
-namespace Src;
-
-use Cielo\API30\Ecommerce\Environment;
-use Cielo\API30\Merchant;
-use Cielo\API30\Ecommerce\Sale;
-use Cielo\API30\Ecommerce\Payment;
-use Cielo\API30\Ecommerce\RecurrentPayment;
-use Cielo\API30\Ecommerce\CieloEcommerce;
-use Cielo\API30\Ecommerce\CreditCard;
-use Cielo\API30\Ecommerce\Request\CieloRequestException;
-
-use Src\Message;
+namespace Jamartins\Cielo;
 
 class Payments extends Message
 {
@@ -185,6 +174,13 @@ class Payments extends Message
         $tokenized = $this->callBack;
         
         return $tokenized;
+    }
+    
+    
+    
+    public function creatingTokenizedCardOnAuthorization(array $data) 
+    {
+        var_dump($data);
     }
     
     

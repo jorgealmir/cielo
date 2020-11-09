@@ -1,8 +1,6 @@
 <?php
 
-namespace Src;
-
-use Src\Error;
+namespace Jamartins\Cielo;
 
 /**
  * Description of MessageCielo

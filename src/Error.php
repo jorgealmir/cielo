@@ -1,6 +1,6 @@
 <?php
 
-namespace Src;
+namespace Jamartins\Cielo;
 
 /**
  * Description of ErrorCielo
