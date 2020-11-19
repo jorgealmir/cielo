@@ -38,9 +38,36 @@ class Payments extends Message
             "MerchantKey: {$this->merchantKey}"
         ];
     }
+    
+    
+        
+    /*
+     * Transações com POSTs
+     */
+    public function payWithCreditCard(array $data) 
+    {
+        $this->endPoint = "/1/sales/";
+        
+        $this->params = $data;
+        
+        $this->post();
+        
+        $card = $this->callBack;
+            
+        $this->setMessage(
+            $card->Payment->Status,
+            $card->Payment->ReturnCode
+        );
+        
+        $this->setCardNumber($card->Payment->CreditCard->CardNumber);
+        $this->setTid($card->Payment->Tid);
+        $this->setPaymentId($card->Payment->PaymentId);
+        
+        return $card;
+    }
             
 
-        
+            
     /*
      * Transações com GETs
      */
@@ -53,7 +80,7 @@ class Payments extends Message
     }
     
     
-    
+        
     public function getCreditCardData($cardNumber) 
     {
         $number = substr($cardNumber, 1, 6);
@@ -108,33 +135,6 @@ class Payments extends Message
         $this->setMessage($recurrent['RecurrentPayment']->Status, "");
         
         return $recurrent;
-    }
-    
-    
-    
-    
-    /*
-     * Transações com POSTs
-     */
-    public function payWithCreditCard(array $data) 
-    {
-        $this->endPoint = "/1/sales/";
-        
-        $this->params = $data;
-        
-        $this->post();
-        
-        $card = (array) $this->callBack;
-            
-        $this->setMessage(
-            $card['Payment']->Status,
-            $card['Payment']->ReturnCode
-        );
-        
-        $this->setTid($card['Payment']->Tid);
-        $this->setPaymentId($card['Payment']->PaymentId);
-        
-        return $card;
     }
     
     

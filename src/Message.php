@@ -16,9 +16,31 @@ class Message extends Error
     private $tid;
     private $token;
     private $paymentId;
+    private $cardNumber;
     private $recurrentPaymentId;
     private $error;
 
+    /**
+     * Popula a mensagem de retorno
+     * @param type $code
+     * @param type $message
+     * @param bool $error
+     */
+    public function setMessage2($code, $message, bool $error = false) 
+    {
+        $this->code = $code;
+        $this->message = $message;
+        $this->error = $error;
+    }
+    
+    public function getMessage2(): string 
+    {
+        if ($this->error) {
+            return "Opsss: " . $this->code . " - " . $this->message;
+        } else {
+            
+        }
+    }
 
     /**
      * Atribuição de variáveis
@@ -109,6 +131,16 @@ class Message extends Error
         return $this->tid;
     }
     
+    public function setCardNumber($value) 
+    {
+        $this->cardNumber = $value;
+    }
+    
+    public function getCardNumber(): string 
+    {
+        return $this->cardNumber;
+    }
+    
     public function setToken($value) 
     {
         $this->token = $value;
@@ -144,7 +176,7 @@ class Message extends Error
         return $this->status;
     }
     
-    public function confirmed() 
+    public function confirmed(): bool 
     {
         return $this->status == 2;
     }

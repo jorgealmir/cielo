@@ -4,7 +4,6 @@ Integration with Cielo-3.0 API
 
 ### Dependencies
 * PHP >= 7.2
-* developercielo/api-3.0-php
 
 ### Features
 
@@ -63,7 +62,7 @@ composer require "ja-martins/cielo"
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Src\Payments;
+use Jamartins\Cielo\Payments;
 
 $cielo = new Payments(
     "merchantId", 
@@ -126,19 +125,7 @@ if ($cielo->getStatus() == 1) {
 }
 ```
 
-### Creating a tokenized credit card payment
-
-```php
-$cielo->payCreditCardTokenized([
-    "order" => "321321321321",
-    "customerName" => "Teste Customer",
-    "amount" => 15700,
-    "securityCode" => "321",
-    "brand" => "Visa",
-    "cardToken" => "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-]);
-```
-
+## CREDIT CARD
 
 ### Creating a credit card payment:
 
@@ -164,19 +151,23 @@ $card = $cielo->payWithCreditCard([
             "Holder" => "Teste Holder",
             "ExpirationDate" => "12/2030",
             "SecurityCode" => "123",
-            "Brand" => "Visa",
+            "Brand" => "Master",
             "SaveCard" => true
         ]
     ]
 ]);
 
-var_dump($cielo->getTid());
+if ($cielo->confirmed()) {
+    var_dump($card);
 
-var_dump($cielo->getPaymentId());
+    var_dump($cielo->getTid());
 
-var_dump($cielo->getMessage());
+    var_dump($cielo->getPaymentId());
 
-var_dump($card);
+    var_dump($cielo->getCardNumber());
+
+    var_dump($cielo->getMessage());
+}
 ```
 
 ### Creating a recurring payment
@@ -217,6 +208,18 @@ if ($cielo->confirmed()) {
     var_dump($payRecurrent);
 }
 ```
+
+### Creating a tokenized credit card payment
+
+```php
+$cielo->payCreditCardTokenized([
+    "order" => "321321321321",
+    "customerName" => "Teste Customer",
+    "amount" => 15700,
+    "securityCode" => "321",
+    "brand" => "Visa",
+    "cardToken" => "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+]);
 
 ### Creating Tokenized Card
 
