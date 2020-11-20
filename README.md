@@ -212,6 +212,7 @@ if ($cielo->confirmed()) {
 ### Creating a tokenized credit card payment
 
 ```php
+
 $cielo->payCreditCardTokenized([
     "order" => "321321321321",
     "customerName" => "Teste Customer",
@@ -224,6 +225,7 @@ $cielo->payCreditCardTokenized([
 ### Creating Tokenized Card
 
 ```php
+
 $tokenized = $cielo->creatingTokenizedCard([
     "CustomerName" => "Comprador Teste Cielo",
     "CardNumber" => "4929756094783682",
@@ -232,9 +234,7 @@ $tokenized = $cielo->creatingTokenizedCard([
     "Brand" => "Visa"
 ]);
 
-if (!empty($tokenized->CardToken)) {
-    var_dump($tokenized->CardToken);
-}
+var_dump($cielo->getToken());
 ```
 
 ### Developer

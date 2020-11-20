@@ -14,7 +14,7 @@ class Message extends Error
     private $message;
     private $texto;
     private $tid;
-    private $token;
+//    private $token;
     private $paymentId;
     private $cardNumber;
     private $recurrentPaymentId;
@@ -96,7 +96,7 @@ class Message extends Error
         if ($this->status == 2) {
             return $this->texto . ' TID ' . $this->tid;
         } elseif ($this->status == 21) {
-            return $this->texto . '. Token: ' . $this->token; 
+//            return $this->texto . '. Token: ' . $this->token; 
         } else {
             if ($this->code == '05') {
                 $this->message = 'Não Autorizado';
@@ -141,15 +141,15 @@ class Message extends Error
         return $this->cardNumber;
     }
     
-    public function setToken($value) 
-    {
-        $this->token = $value;
-    }
-    
-    public function getToken(): string
-    {
-        return $this->token;
-    }
+//    public function setToken($value) 
+//    {
+//        $this->token = $value;
+//    }
+//    
+//    public function getToken(): string
+//    {
+//        return $this->token;
+//    }
     
     public function setPaymentId($value) 
     {

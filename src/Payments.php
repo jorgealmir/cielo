@@ -9,6 +9,7 @@ class Payments extends Message
     private $apiUrlQuery;
     private $apiUrl;
     private $headers;
+    private $token;
 
     private $endPoint;
     private $params;
@@ -41,8 +42,10 @@ class Payments extends Message
     
     
         
-    /*
-     * Transações com POSTs
+    /**
+     * Tranzação simples com cartão de crédito
+     * @param array $data
+     * @return type
      */
     public function payWithCreditCard(array $data) 
     {
@@ -163,6 +166,11 @@ class Payments extends Message
     
     
     
+    /**
+     * Cria o token do cartão de crédito
+     * @param array $data
+     * @return type
+     */
     public function creatingTokenizedCard(array $data) 
     {
         $this->endPoint = "/1/card/";
@@ -173,7 +181,19 @@ class Payments extends Message
         
         $tokenized = $this->callBack;
         
+        $this->setToken($tokenized->CardToken);
+        
         return $tokenized;
+    }
+    
+    public function setToken($value) 
+    {
+        $this->token = $value;
+    }
+    
+    public function getToken(): string
+    {
+        return $this->token;
     }
     
     
